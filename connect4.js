@@ -6,11 +6,13 @@
  */
 
 class Game {
-  constructor(height=6, width=7) {
+  constructor(height=6, width=7, player1, player2) {
     this.WIDTH = width;
     this.HEIGHT = height;
     this.board = [];
-    this.currPlayer = 1;
+    this.player1 = player1;
+    this.player2 = player2;
+    this.currPlayer = player1;
     this.emptyBoard();
     this.makeBoard();
     this.makeHtmlBoard();
@@ -40,9 +42,7 @@ class Game {
 
     // make column tops (clickable area for adding a piece to that column)
     const top = document.createElement('tr');
-      
-    buttonRow.append(button);
-    gameBoard.append(buttonRow);
+
 
 
     top.setAttribute('id', 'column-top');
@@ -87,7 +87,7 @@ class Game {
   placeInTable(y, x) {
     const piece = document.createElement('div');
     piece.classList.add('piece');
-    piece.classList.add(`p${this.currPlayer}`);
+    piece.style.backgroundColor = this.currPlayer.colorName;
     piece.style.top = -50 * (y + 2);
 
     const spot = document.getElementById(`${y}-${x}`);
@@ -118,7 +118,11 @@ class Game {
 
     // check for win
     if (this.checkForWin()) {
-      return this.endGame(`Player ${this.currPlayer} won!`);
+      if (this.currPlayer = this.player1) {
+        return this.endGame("Player 1 won!");
+      } else {
+        return this.endGame("Player 2 won!");
+      }
     }
 
     // check for tie
@@ -127,7 +131,7 @@ class Game {
     }
 
     // switch players
-    this.currPlayer = this.currPlayer === 1 ? 2 : 1;
+    this.currPlayer = this.currPlayer === this.player1 ? this.player2 : this.player1;
 
   }
 
@@ -171,21 +175,36 @@ class Game {
   }
 }
 
+class Player{
+  constructor(colorName) {
+    this.colorName = colorName;
+  }
+}
+
 
 const buttonRow =document.createElement('div');
 const button = document.createElement('button');
+const player1Form = document.createElement('input');
+player1Form.classList.add("placeholder");
+player1Form.placeholder = "Player 1 color";
+const player2Form = document.createElement('input');
+player2Form.classList.add("placeholder");
+player2Form.placeholder = "Player 2 color";
+buttonRow.append(player1Form, player2Form);
 
 button.setAttribute('id', 'begin-game');
 button.innerHTML = 'begin game';
 
 button.addEventListener('click', function(){
  
-  new Game();
+  let player1 = new Player(player1Form.value);
+  let player2 = new Player(player2Form.value);
+  new Game(6, 7, player1, player2);
 
 });
-let buttonPlace = document.body;
+let buttonPlace = document.getElementById("game");
 buttonRow.append(button);
-buttonPlace.append(buttonRow);
+buttonPlace.prepend(buttonRow);
 
 
 
