@@ -13,6 +13,7 @@
   width: 80%;
   height: 80%;
   border-radius: 50%;
+  animation: drop-down 500ms ease-in;
 }
 
 .piece.p1 {
@@ -23,6 +24,16 @@
   background-color: blue;
 }
 
+@keyframes drop-down {
+  from {
+    transform: translateY(-800%);
+  }
+
+  to {
+    transform: translateY(0)
+  }
+
+}
 /* column-top is table row of clickable areas for each column */
 
 #column-top td {
